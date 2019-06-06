@@ -4,6 +4,7 @@ from curses import textpad
 import time
 import numpy as np
 
+#snake class
 class snake:
 
 	def __init__(self,direction='right'):
@@ -13,6 +14,7 @@ class snake:
 		self.fy,self.fx=0,0
 		self.s=0
 
+	#whole screen display
 	def display(self,screen):
 		screen.clear()
 		self.display_details(screen)
@@ -22,11 +24,13 @@ class snake:
 		screen.addstr(self.fy,self.fx,'o')	
 		screen.refresh()
 	
+	#score display
 	def display_details(self,screen):
 		sm='SCORE:'
 		self.s=len(self.snake)-3
 		screen.addstr(4,self.x-len(sm+str(self.s))-5,sm+str(self.s))
 
+	#:( lost display will display on the current screen
 	def loose_Display(self,screen):
 		message='GAME OVER'
 		screen.addstr(self.y//2,self.x//2-len(message)//2,message)	
@@ -71,6 +75,7 @@ class snake:
 		self.snake.insert(0,nh)
 		self.snake.pop()	
 
+	#to increment the snake size
 	def food(self,screen):
 		if(self.snake[0][0] == self.fy and self.snake[0][1] == self.fx):
 			if self.direction == curses.KEY_RIGHT:
@@ -84,6 +89,7 @@ class snake:
 			self.display(screen)
 			self.fy,self.fx =np.random.randint(low=6, high=self.y-5),np.random.randint(low=6, high=self.y-5)
 	
+	#speed controller
 	def speed(self):
 		if self.s==10:
 			screen.timeout(150)
@@ -110,6 +116,7 @@ def main(screen):
 	while(loop):
 		key=screen.getch()
 		s.display(screen)
+		# direction navigator
 		if key in [curses.KEY_RIGHT,curses.KEY_LEFT,curses.KEY_UP,curses.KEY_DOWN]:
 			if (s.direction == curses.KEY_RIGHT and key == curses.KEY_LEFT):
 				s.direction=curses.KEY_RIGHT
