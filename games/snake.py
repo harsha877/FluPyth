@@ -1,3 +1,4 @@
+#snake game
 import curses
 from curses import textpad
 import time
