@@ -386,7 +386,7 @@ class Lodo:
 		self.players[3].end = [22, 35]
 		self.players[2].end = [20, 39]
 		if self.numplayer == 2:
-			print('2wertjgfd')
+			#print('2wertjgfd')
 			self.active = [1, 0, 1, 0]
 		elif self.numplayer == 3:
 			self.active = [1, 1, 1, 0]
@@ -396,13 +396,18 @@ class Lodo:
 		# self.screen.addstr(self.players[0].start[0],self.players[0].start[1], 'o')
 
 	def displayscore(self):
+		print (self.active)
+		print ('fsgd')
 		self.screen.clear()
-		self.time.sort()
-		self.time.reverse()
+		#self.time.sort()
+		#self.time.reverse()
 		for i, j in self.time:
 			if self.active[j] >= 1:
 				self.screen.attron(curses.color_pair(j+2))
-				self.screen.addstr(j+5, 5, 'player'+str(j+1))
+				if (max(self.time)[0])==self.time[j][0] and (min(self.time)[0])!=self.time[j][0]:
+					self.screen.addstr(j+5, 5, 'players'+str(j+1)+'            WINNER ')
+				else:
+					self.screen.addstr(j + 5, 5, 'players' + str(j + 1) +'     Yet To Complete')
 				self.screen.attroff(curses.color_pair(j+2))
 				self.screen.refresh()
 		time.sleep(5)
@@ -434,7 +439,7 @@ class Lodo:
 						self.screen.addstr(self.players[i].c[j][0], self.players[i].c[j][1], 'o')
 						self.screen.attroff(curses.color_pair(i+2))
 
-		print(self.active)
+		#print(self.active)
 
 	def displaycoinscurrent(self):
 		self.screen.attron(curses.color_pair(2))
@@ -480,7 +485,7 @@ def main(screen,nply):
 	message = 'press y key to roll dice'
 	av = 'available coins to move'
 	player = 0
-	print(nply.isdigit())
+	#print(nply.isdigit())
 	# game.players[0].move(6, 1)
 
 
@@ -524,6 +529,8 @@ def main(screen,nply):
 					screen.attroff(curses.color_pair(player + 2))
 					screen.addstr(11, 71, av)
 					screen.refresh()
+					#game.players[0].lock = [2, 2, 2, 2]
+					#game.players[1].lock = [2, 2, 2, 2]
 					if coin in ['1', '2', '3', '4']:
 						# print('coin', coin, ord(coin), int(coin))
 						# wrong = game.players[player].ccurrent[int(coin) - 1]
@@ -584,7 +591,8 @@ def main(screen,nply):
 
 						if sum(game.players[player].lock) == 8:
 							game.active[player] = 10
-						print(game.active)
+							game.time[player][0]=int(datetime.now().timestamp())
+						#print(game.active)
 						if (sum(game.active) == 31 and game.numplayer==4) or (sum(game.active) == 21 and game.numplayer==3) or (sum(game.active) == 11 and game.numplayer==2):
 							key = ord('e')
 							game.displayscore()
@@ -600,7 +608,8 @@ def main(screen,nply):
 				# code here
 				if sum(game.players[player].lock) == 8:
 					game.active[player] = 10
-				print(game.active)
+					game.time[player][0] = int(datetime.now().timestamp())
+				#print(game.active)
 				if (sum(game.active) == 31 and game.numplayer == 4) or (
 						sum(game.active) == 21 and game.numplayer == 3) or (
 						sum(game.active) == 11 and game.numplayer == 2):
